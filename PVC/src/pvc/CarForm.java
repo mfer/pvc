@@ -71,7 +71,6 @@ public class CarForm extends JPanel {
             System.out.printf("%12s: %s%n", labelText,
                   mainPanel.getText(labelText));
          }
-
       }
    }
 

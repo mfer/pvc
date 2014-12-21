@@ -1,89 +1,96 @@
 package pvc;
 
-public class PVC extends javax.swing.JFrame {
-    private javax.swing.JButton jButtonProduction;
-    private javax.swing.JButton jButtonSale;
-    private javax.swing.JLabel jLabelPVC;    
-    
-    /** Creates the GUI PVC*/
-    public PVC() {
-        initComponents();
-    }
-    
-    /* Set the PVC welcome GUI */
-    private void initComponents() {        
-        //<editor-fold defaultstate="collapsed" desc=" just two buttons ">        
-        jLabelPVC = new javax.swing.JLabel();
-        jButtonProduction = new javax.swing.JButton();
-        jButtonSale = new javax.swing.JButton();
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PVC");
-        
-        jButtonProduction.setText("Produção");
-        jButtonSale.setText("Venda");
+public class PVC extends JMenuBar {
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jLabelPVC)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jButtonProduction, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jButtonSale, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabelPVC)
-                    .add(jButtonProduction))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jButtonSale))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pack();
-        //</editor-fold>
-    }                        
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            javax.swing.UIManager.LookAndFeelInfo[] installedLookAndFeels=javax.swing.UIManager.getInstalledLookAndFeels();
-            for (int idx=0; idx<installedLookAndFeels.length; idx++)
-                if ("Nimbus".equals(installedLookAndFeels[idx].getName())) {
-                    javax.swing.UIManager.setLookAndFeel(installedLookAndFeels[idx].getClassName());
-                    break;
-                }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PVC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PVC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PVC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PVC.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+   String[ ] fileItems = new String[ ] { "New", "Open", "Save", "Exit" };
+   String[ ] editItems = new String[ ] { "Undo", "Cut", "Copy", "Paste" };
+   String[ ] moduleItems = new String[ ] { "Produção", "Venda", "Carros" };
+   char[ ] fileShortcuts = { 'N','O','S','X' };
+   char[ ] editShortcuts = { 'Z','X','C','V' };
 
-        /* Create and display the GUI */
-        java.awt.EventQueue.invokeLater( new Runnable() {
-            public void run() {
-                new PVC().setVisible(true);
-            }
-        });
-    }  
+   public PVC(  ) {
+
+      JMenu fileMenu = new JMenu("File");
+      JMenu editMenu = new JMenu("Edit");
+      JMenu moduleMenu = new JMenu("Módulos");
+      JMenu otherMenu = new JMenu("Other");
+      JMenu subMenu = new JMenu("SubMenu");
+      JMenu subMenu2 = new JMenu("SubMenu2");
+
+      // Assemble the File menus with mnemonics.
+      ActionListener printListener = new ActionListener(  ) {
+         public void actionPerformed(ActionEvent event) {
+            System.out.println("Menu item [" + event.getActionCommand(  ) +
+                               "] was pressed.");
+         }
+      };
+      for (int i=0; i < fileItems.length; i++) {
+         JMenuItem item = new JMenuItem(fileItems[i], fileShortcuts[i]);
+         item.addActionListener(printListener);
+         fileMenu.add(item);
+      }
+
+      // Assemble the File menus with keyboard accelerators.
+      for (int i=0; i < editItems.length; i++) {
+         JMenuItem item = new JMenuItem(editItems[i]);
+         item.setAccelerator(KeyStroke.getKeyStroke(editShortcuts[i],
+              Toolkit.getDefaultToolkit(  ).getMenuShortcutKeyMask(  ), false));
+         item.addActionListener(printListener);
+         editMenu.add(item);
+      }
+
+      // Insert a separator in the Edit menu in Position 1 after "Undo".
+      editMenu.insertSeparator(1);
+
+      
+      // Assemble the Module menu
+      for (int i=0; i < moduleItems.length; i++) {
+         JMenuItem item = new JMenuItem(moduleItems[i]);
+         item.addActionListener(printListener);
+         moduleMenu.add(item);
+      }
+      
+      // Assemble the submenus of the Other menu.
+      JMenuItem item;
+      subMenu2.add(item = new JMenuItem("Extra 2"));
+      item.addActionListener(printListener);
+      subMenu.add(item = new JMenuItem("Extra 1"));
+      item.addActionListener(printListener);
+      subMenu.add(subMenu2);
+
+      // Assemble the Other menu itself.
+      otherMenu.add(subMenu);
+      otherMenu.add(item = new JCheckBoxMenuItem("Check Me"));
+      item.addActionListener(printListener);
+      otherMenu.addSeparator(  );
+      ButtonGroup buttonGroup = new ButtonGroup(  );
+      otherMenu.add(item = new JRadioButtonMenuItem("Radio 1"));
+      item.addActionListener(printListener);
+      buttonGroup.add(item);
+      otherMenu.add(item = new JRadioButtonMenuItem("Radio 2"));
+      item.addActionListener(printListener);
+      buttonGroup.add(item);
+      otherMenu.addSeparator(  );
+      otherMenu.add(item = new JMenuItem("Potted Plant", 
+                           new ImageIcon("image.gif")));
+      item.addActionListener(printListener);
+
+      // Finally, add all the menus to the menu bar.
+      add(fileMenu);
+      add(editMenu);
+      add(moduleMenu);
+      add(otherMenu);
+   }
+
+   public static void main(String s[ ]) {
+      JFrame frame = new JFrame("PVC Menu");
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setJMenuBar(new PVC(  ));
+      frame.pack(  );
+      frame.setVisible(true);
+   }
 }
